@@ -15,8 +15,6 @@ app.use(bodyParser.json());
 app.use(fileUpload({ limits: { fileSize: 50 * 1024 * 1024 } }));
 app.use(express.static('./public'));
 app.use('/actions', actionRouter);
-app.get('*', (req, res) => {
-    res.sendFile(join(__dirname, 'public/404.html'));
-})
+app.get('*', (req, res) => res.sendFile(join(__dirname, 'public/404.html')));
 
 createServer(app).listen(8080, () => notify('opn is running'));

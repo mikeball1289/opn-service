@@ -7,7 +7,6 @@ const open = require('open');
 export const actionRouter = Router();
 
 const URL_REGEX = /^https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,4}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/;
-
 actionRouter.post('/url', (req, res) => {
     if (req.body.url && typeof req.body.url === 'string' && URL_REGEX.test(req.body.url)) {
         open(req.body.url);
@@ -15,11 +14,12 @@ actionRouter.post('/url', (req, res) => {
     res.end('ok');
 });
 
+const MAX_CLIP_PREVIEW_LENGTH = 30;
 actionRouter.post('/paste', async (req, res) => {
     if (req.body.text && typeof req.body.text === 'string') {
         const clip: string = req.body.text;
         await clipboardy.write(clip);
-        notify(`A new clip was copied\n${clip.length > 10 ? `${clip.substr(0, 30)}...` : clip}`);
+        notify(`A new clip was copied\n${clip.length > MAX_CLIP_PREVIEW_LENGTH ? `${clip.substr(0, MAX_CLIP_PREVIEW_LENGTH)}...` : clip}`);
     }
     res.end('ok');
 });
